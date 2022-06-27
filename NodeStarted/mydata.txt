@@ -1,0 +1,11 @@
+
+<html>
+<body>
+
+    <div><a>Name </a><input type="textbox"></input></div>
+    <div><a>Gender </a><input type="radio" name="gender">Male</input></a><input type="radio" name="gender">Female</input></div>
+    <div><a>Country </a><select><option>VN</option><option>NV</option></select></div>
+    <div><button>OK</button></div>
+
+  </body>
+  </html>
