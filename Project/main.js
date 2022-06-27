@@ -45,7 +45,7 @@ app.post('/search',async (req,res)=>{
     res.render('home',{'products':products})
 })
 
-
+//create (post)
 app.post('/newProduct', async (req,res)=>{
     let name = req.body.txtName
     let price = req.body.txtPrice
@@ -67,7 +67,7 @@ app.post('/newProduct', async (req,res)=>{
     res.redirect('/')
 })
 
-//insert
+//insert get
 app.get('/insert',(req,res)=>{
     res.render("newProduct")
 })
@@ -98,10 +98,12 @@ function isAuthenticated(req,res,next){
 
 app.post('/account',async (req,res)=>{
     let name = req.body.txtName
+    let pass = req.body.txtPass
     req.session.userName = name
+    req.session.password = pass
     let server = await MongoClient.connect(url)
     let dbo = server.db("ATNToys")
-    let result = await dbo.collection("users").find({$and :[{'name':name}]}).toArray()
+    let result = await dbo.collection("users").find({$and :[{'name':name},{'pass':pass}]}).toArray()
     if(result.length >0){
         res.redirect('/profile')
     }else{
@@ -113,7 +115,7 @@ app.post('/account',async (req,res)=>{
 app.get('/profile',isAuthenticated, async (req,res)=>{
     let server = await MongoClient.connect(url)
     let dbo = server.db("ATNToys")
-    let user = await dbo.collection("users").find({$and :[{'name':req.session.userName}]}).limit(1).toArray()
+    let user = await dbo.collection("users").find({$and :[{'name':req.session.userName},{'pass':req.session.password}]}).limit(1).toArray()
     res.render('profile',{'name': req.session.userName,'sId':req.session.id,'user':user[0]})
 })
 
